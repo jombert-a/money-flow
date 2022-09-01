@@ -1,0 +1,16 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:postgres@localhost:5432/db_apollo?schema=public"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Skill {
+  id Int @id @default(autoincrement())
+  name String 
+  children Skill[] @relation("children")
+  parent   Skill?  @relation("children", fields: [parentId], references: [id])
+  parentId Int? @unique
+}
