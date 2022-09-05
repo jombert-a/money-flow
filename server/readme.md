@@ -12,3 +12,5 @@ to generate graphql schema:
 
 to migrate prisma:
 1. yarn run prisma:migrate
+
+primary endpoint: localhost:3030/graphql-apu
