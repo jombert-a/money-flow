@@ -7,10 +7,13 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Skill {
-  id Int @id @default(autoincrement())
-  name String 
-  children Skill[] @relation("children")
-  parent   Skill?  @relation("children", fields: [parentId], references: [id])
-  parentId Int? @unique
+generator typegraphql {
+  provider = "typegraphql-prisma"
+  output   = "../prisma/generated/type-graphql"
+}
+
+model User {
+  id    String  @default(cuid()) @id
+  email String  @unique
+  name  String?
 }
