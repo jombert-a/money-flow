@@ -1,0 +1,12 @@
+export { AggregatePlaceArgs } from "./AggregatePlaceArgs";
+export { CreateManyPlaceArgs } from "./CreateManyPlaceArgs";
+export { CreateOnePlaceArgs } from "./CreateOnePlaceArgs";
+export { DeleteManyPlaceArgs } from "./DeleteManyPlaceArgs";
+export { DeleteOnePlaceArgs } from "./DeleteOnePlaceArgs";
+export { FindFirstPlaceArgs } from "./FindFirstPlaceArgs";
+export { FindManyPlaceArgs } from "./FindManyPlaceArgs";
+export { FindUniquePlaceArgs } from "./FindUniquePlaceArgs";
+export { GroupByPlaceArgs } from "./GroupByPlaceArgs";
+export { UpdateManyPlaceArgs } from "./UpdateManyPlaceArgs";
+export { UpdateOnePlaceArgs } from "./UpdateOnePlaceArgs";
+export { UpsertOnePlaceArgs } from "./UpsertOnePlaceArgs";

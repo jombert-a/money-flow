@@ -3,12 +3,16 @@ import * as tslib from "tslib";
 import * as crudResolvers from "./resolvers/crud/resolvers-crud.index";
 import * as argsTypes from "./resolvers/crud/args.index";
 import * as actionResolvers from "./resolvers/crud/resolvers-actions.index";
+import * as relationResolvers from "./resolvers/relations/resolvers.index";
 import * as models from "./models";
 import * as outputTypes from "./resolvers/outputs";
 import * as inputTypes from "./resolvers/inputs";
 
 const crudResolversMap = {
-  User: crudResolvers.UserCrudResolver
+  User: crudResolvers.UserCrudResolver,
+  Place: crudResolvers.PlaceCrudResolver,
+  OperationType: crudResolvers.OperationTypeCrudResolver,
+  Operation: crudResolvers.OperationCrudResolver
 };
 const actionResolversMap = {
   User: {
@@ -24,10 +28,55 @@ const actionResolversMap = {
     updateManyUser: actionResolvers.UpdateManyUserResolver,
     updateOneUser: actionResolvers.UpdateOneUserResolver,
     upsertOneUser: actionResolvers.UpsertOneUserResolver
+  },
+  Place: {
+    aggregatePlace: actionResolvers.AggregatePlaceResolver,
+    createManyPlace: actionResolvers.CreateManyPlaceResolver,
+    createOnePlace: actionResolvers.CreateOnePlaceResolver,
+    deleteManyPlace: actionResolvers.DeleteManyPlaceResolver,
+    deleteOnePlace: actionResolvers.DeleteOnePlaceResolver,
+    findFirstPlace: actionResolvers.FindFirstPlaceResolver,
+    places: actionResolvers.FindManyPlaceResolver,
+    place: actionResolvers.FindUniquePlaceResolver,
+    groupByPlace: actionResolvers.GroupByPlaceResolver,
+    updateManyPlace: actionResolvers.UpdateManyPlaceResolver,
+    updateOnePlace: actionResolvers.UpdateOnePlaceResolver,
+    upsertOnePlace: actionResolvers.UpsertOnePlaceResolver
+  },
+  OperationType: {
+    aggregateOperationType: actionResolvers.AggregateOperationTypeResolver,
+    createManyOperationType: actionResolvers.CreateManyOperationTypeResolver,
+    createOneOperationType: actionResolvers.CreateOneOperationTypeResolver,
+    deleteManyOperationType: actionResolvers.DeleteManyOperationTypeResolver,
+    deleteOneOperationType: actionResolvers.DeleteOneOperationTypeResolver,
+    findFirstOperationType: actionResolvers.FindFirstOperationTypeResolver,
+    operationTypes: actionResolvers.FindManyOperationTypeResolver,
+    operationType: actionResolvers.FindUniqueOperationTypeResolver,
+    groupByOperationType: actionResolvers.GroupByOperationTypeResolver,
+    updateManyOperationType: actionResolvers.UpdateManyOperationTypeResolver,
+    updateOneOperationType: actionResolvers.UpdateOneOperationTypeResolver,
+    upsertOneOperationType: actionResolvers.UpsertOneOperationTypeResolver
+  },
+  Operation: {
+    aggregateOperation: actionResolvers.AggregateOperationResolver,
+    createManyOperation: actionResolvers.CreateManyOperationResolver,
+    createOneOperation: actionResolvers.CreateOneOperationResolver,
+    deleteManyOperation: actionResolvers.DeleteManyOperationResolver,
+    deleteOneOperation: actionResolvers.DeleteOneOperationResolver,
+    findFirstOperation: actionResolvers.FindFirstOperationResolver,
+    operations: actionResolvers.FindManyOperationResolver,
+    operation: actionResolvers.FindUniqueOperationResolver,
+    groupByOperation: actionResolvers.GroupByOperationResolver,
+    updateManyOperation: actionResolvers.UpdateManyOperationResolver,
+    updateOneOperation: actionResolvers.UpdateOneOperationResolver,
+    upsertOneOperation: actionResolvers.UpsertOneOperationResolver
   }
 };
 const crudResolversInfo = {
-  User: ["aggregateUser", "createManyUser", "createOneUser", "deleteManyUser", "deleteOneUser", "findFirstUser", "users", "user", "groupByUser", "updateManyUser", "updateOneUser", "upsertOneUser"]
+  User: ["aggregateUser", "createManyUser", "createOneUser", "deleteManyUser", "deleteOneUser", "findFirstUser", "users", "user", "groupByUser", "updateManyUser", "updateOneUser", "upsertOneUser"],
+  Place: ["aggregatePlace", "createManyPlace", "createOnePlace", "deleteManyPlace", "deleteOnePlace", "findFirstPlace", "places", "place", "groupByPlace", "updateManyPlace", "updateOnePlace", "upsertOnePlace"],
+  OperationType: ["aggregateOperationType", "createManyOperationType", "createOneOperationType", "deleteManyOperationType", "deleteOneOperationType", "findFirstOperationType", "operationTypes", "operationType", "groupByOperationType", "updateManyOperationType", "updateOneOperationType", "upsertOneOperationType"],
+  Operation: ["aggregateOperation", "createManyOperation", "createOneOperation", "deleteManyOperation", "deleteOneOperation", "findFirstOperation", "operations", "operation", "groupByOperation", "updateManyOperation", "updateOneOperation", "upsertOneOperation"]
 };
 const argsInfo = {
   AggregateUserArgs: ["where", "orderBy", "cursor", "take", "skip"],
@@ -41,7 +90,43 @@ const argsInfo = {
   GroupByUserArgs: ["where", "orderBy", "by", "having", "take", "skip"],
   UpdateManyUserArgs: ["data", "where"],
   UpdateOneUserArgs: ["data", "where"],
-  UpsertOneUserArgs: ["where", "create", "update"]
+  UpsertOneUserArgs: ["where", "create", "update"],
+  AggregatePlaceArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  CreateManyPlaceArgs: ["data", "skipDuplicates"],
+  CreateOnePlaceArgs: ["data"],
+  DeleteManyPlaceArgs: ["where"],
+  DeleteOnePlaceArgs: ["where"],
+  FindFirstPlaceArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindManyPlaceArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindUniquePlaceArgs: ["where"],
+  GroupByPlaceArgs: ["where", "orderBy", "by", "having", "take", "skip"],
+  UpdateManyPlaceArgs: ["data", "where"],
+  UpdateOnePlaceArgs: ["data", "where"],
+  UpsertOnePlaceArgs: ["where", "create", "update"],
+  AggregateOperationTypeArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  CreateManyOperationTypeArgs: ["data", "skipDuplicates"],
+  CreateOneOperationTypeArgs: ["data"],
+  DeleteManyOperationTypeArgs: ["where"],
+  DeleteOneOperationTypeArgs: ["where"],
+  FindFirstOperationTypeArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindManyOperationTypeArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindUniqueOperationTypeArgs: ["where"],
+  GroupByOperationTypeArgs: ["where", "orderBy", "by", "having", "take", "skip"],
+  UpdateManyOperationTypeArgs: ["data", "where"],
+  UpdateOneOperationTypeArgs: ["data", "where"],
+  UpsertOneOperationTypeArgs: ["where", "create", "update"],
+  AggregateOperationArgs: ["where", "orderBy", "cursor", "take", "skip"],
+  CreateManyOperationArgs: ["data", "skipDuplicates"],
+  CreateOneOperationArgs: ["data"],
+  DeleteManyOperationArgs: ["where"],
+  DeleteOneOperationArgs: ["where"],
+  FindFirstOperationArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindManyOperationArgs: ["where", "orderBy", "cursor", "take", "skip", "distinct"],
+  FindUniqueOperationArgs: ["where"],
+  GroupByOperationArgs: ["where", "orderBy", "by", "having", "take", "skip"],
+  UpdateManyOperationArgs: ["data", "where"],
+  UpdateOneOperationArgs: ["data", "where"],
+  UpsertOneOperationArgs: ["where", "create", "update"]
 };
 
 type ResolverModelNames = keyof typeof crudResolversMap;
@@ -130,6 +215,58 @@ export function applyArgsTypesEnhanceMap(
   }
 }
 
+const relationResolversMap = {
+  User: relationResolvers.UserRelationsResolver,
+  Place: relationResolvers.PlaceRelationsResolver,
+  OperationType: relationResolvers.OperationTypeRelationsResolver,
+  Operation: relationResolvers.OperationRelationsResolver
+};
+const relationResolversInfo = {
+  User: ["operations"],
+  Place: ["Operations"],
+  OperationType: ["operations"],
+  Operation: ["user", "operationType", "place"]
+};
+
+type RelationResolverModelNames = keyof typeof relationResolversMap;
+
+type RelationResolverActionNames<
+  TModel extends RelationResolverModelNames
+  > = keyof typeof relationResolversMap[TModel]["prototype"];
+
+export type RelationResolverActionsConfig<TModel extends RelationResolverModelNames>
+  = Partial<Record<RelationResolverActionNames<TModel> | "_all", MethodDecorator[]>>;
+
+export type RelationResolversEnhanceMap = {
+  [TModel in RelationResolverModelNames]?: RelationResolverActionsConfig<TModel>;
+};
+
+export function applyRelationResolversEnhanceMap(
+  relationResolversEnhanceMap: RelationResolversEnhanceMap,
+) {
+  for (const relationResolversEnhanceMapKey of Object.keys(relationResolversEnhanceMap)) {
+    const modelName = relationResolversEnhanceMapKey as keyof typeof relationResolversEnhanceMap;
+    const relationResolverTarget = relationResolversMap[modelName].prototype;
+    const relationResolverActionsConfig = relationResolversEnhanceMap[modelName]!;
+    if (relationResolverActionsConfig._all) {
+      const allActionsDecorators = relationResolverActionsConfig._all;
+      const relationResolverActionNames = relationResolversInfo[modelName as keyof typeof relationResolversInfo];
+      for (const relationResolverActionName of relationResolverActionNames) {
+        tslib.__decorate(allActionsDecorators, relationResolverTarget, relationResolverActionName, null);
+      }
+    }
+    const relationResolverActionsToApply = Object.keys(relationResolverActionsConfig).filter(
+      it => it !== "_all"
+    );
+    for (const relationResolverActionName of relationResolverActionsToApply) {
+      const decorators = relationResolverActionsConfig[
+        relationResolverActionName as keyof typeof relationResolverActionsConfig
+      ] as MethodDecorator[];
+      tslib.__decorate(decorators, relationResolverTarget, relationResolverActionName, null);
+    }
+  }
+}
+
 type TypeConfig = {
   class?: ClassDecorator[];
   fields?: FieldsConfig;
@@ -169,7 +306,10 @@ function applyTypeClassEnhanceConfig<
 }
 
 const modelsInfo = {
-  User: ["id", "email", "name"]
+  User: ["id", "email"],
+  Place: ["id", "name"],
+  OperationType: ["id", "name", "postive"],
+  Operation: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value"]
 };
 
 type ModelNames = keyof typeof models;
@@ -209,11 +349,31 @@ export function applyModelsEnhanceMap(modelsEnhanceMap: ModelsEnhanceMap) {
 
 const outputsInfo = {
   AggregateUser: ["_count", "_min", "_max"],
-  UserGroupBy: ["id", "email", "name", "_count", "_min", "_max"],
+  UserGroupBy: ["id", "email", "_count", "_min", "_max"],
+  AggregatePlace: ["_count", "_min", "_max"],
+  PlaceGroupBy: ["id", "name", "_count", "_min", "_max"],
+  AggregateOperationType: ["_count", "_min", "_max"],
+  OperationTypeGroupBy: ["id", "name", "postive", "_count", "_min", "_max"],
+  AggregateOperation: ["_count", "_avg", "_sum", "_min", "_max"],
+  OperationGroupBy: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value", "_count", "_avg", "_sum", "_min", "_max"],
   AffectedRowsOutput: ["count"],
-  UserCountAggregate: ["id", "email", "name", "_all"],
-  UserMinAggregate: ["id", "email", "name"],
-  UserMaxAggregate: ["id", "email", "name"]
+  UserCount: ["operations"],
+  UserCountAggregate: ["id", "email", "_all"],
+  UserMinAggregate: ["id", "email"],
+  UserMaxAggregate: ["id", "email"],
+  PlaceCount: ["Operations"],
+  PlaceCountAggregate: ["id", "name", "_all"],
+  PlaceMinAggregate: ["id", "name"],
+  PlaceMaxAggregate: ["id", "name"],
+  OperationTypeCount: ["operations"],
+  OperationTypeCountAggregate: ["id", "name", "postive", "_all"],
+  OperationTypeMinAggregate: ["id", "name", "postive"],
+  OperationTypeMaxAggregate: ["id", "name", "postive"],
+  OperationCountAggregate: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value", "_all"],
+  OperationAvgAggregate: ["value"],
+  OperationSumAggregate: ["value"],
+  OperationMinAggregate: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value"],
+  OperationMaxAggregate: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value"]
 };
 
 type OutputTypesNames = keyof typeof outputTypes;
@@ -254,30 +414,137 @@ export function applyOutputTypesEnhanceMap(
 }
 
 const inputsInfo = {
-  UserWhereInput: ["AND", "OR", "NOT", "id", "email", "name"],
-  UserOrderByWithRelationInput: ["id", "email", "name"],
+  UserWhereInput: ["AND", "OR", "NOT", "id", "email", "operations"],
+  UserOrderByWithRelationInput: ["id", "email", "operations"],
   UserWhereUniqueInput: ["id", "email"],
-  UserOrderByWithAggregationInput: ["id", "email", "name", "_count", "_max", "_min"],
-  UserScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "email", "name"],
-  UserCreateInput: ["id", "email", "name"],
-  UserUpdateInput: ["id", "email", "name"],
-  UserCreateManyInput: ["id", "email", "name"],
-  UserUpdateManyMutationInput: ["id", "email", "name"],
+  UserOrderByWithAggregationInput: ["id", "email", "_count", "_max", "_min"],
+  UserScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "email"],
+  PlaceWhereInput: ["AND", "OR", "NOT", "id", "name", "Operations"],
+  PlaceOrderByWithRelationInput: ["id", "name", "Operations"],
+  PlaceWhereUniqueInput: ["id"],
+  PlaceOrderByWithAggregationInput: ["id", "name", "_count", "_max", "_min"],
+  PlaceScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "name"],
+  OperationTypeWhereInput: ["AND", "OR", "NOT", "id", "name", "postive", "operations"],
+  OperationTypeOrderByWithRelationInput: ["id", "name", "postive", "operations"],
+  OperationTypeWhereUniqueInput: ["id", "name"],
+  OperationTypeOrderByWithAggregationInput: ["id", "name", "postive", "_count", "_max", "_min"],
+  OperationTypeScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "name", "postive"],
+  OperationWhereInput: ["AND", "OR", "NOT", "id", "userId", "user", "operationTypeId", "operationType", "placeId", "place", "comment", "date", "value"],
+  OperationOrderByWithRelationInput: ["id", "userId", "user", "operationTypeId", "operationType", "placeId", "place", "comment", "date", "value"],
+  OperationWhereUniqueInput: ["id"],
+  OperationOrderByWithAggregationInput: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value", "_count", "_avg", "_max", "_min", "_sum"],
+  OperationScalarWhereWithAggregatesInput: ["AND", "OR", "NOT", "id", "userId", "operationTypeId", "placeId", "comment", "date", "value"],
+  UserCreateInput: ["id", "email", "operations"],
+  UserUpdateInput: ["id", "email", "operations"],
+  UserCreateManyInput: ["id", "email"],
+  UserUpdateManyMutationInput: ["id", "email"],
+  PlaceCreateInput: ["id", "name", "Operations"],
+  PlaceUpdateInput: ["id", "name", "Operations"],
+  PlaceCreateManyInput: ["id", "name"],
+  PlaceUpdateManyMutationInput: ["id", "name"],
+  OperationTypeCreateInput: ["id", "name", "postive", "operations"],
+  OperationTypeUpdateInput: ["id", "name", "postive", "operations"],
+  OperationTypeCreateManyInput: ["id", "name", "postive"],
+  OperationTypeUpdateManyMutationInput: ["id", "name", "postive"],
+  OperationCreateInput: ["id", "user", "operationType", "place", "comment", "date", "value"],
+  OperationUpdateInput: ["id", "user", "operationType", "place", "comment", "date", "value"],
+  OperationCreateManyInput: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value"],
+  OperationUpdateManyMutationInput: ["id", "comment", "date", "value"],
   StringFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "mode", "not"],
-  StringNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "mode", "not"],
-  UserCountOrderByAggregateInput: ["id", "email", "name"],
-  UserMaxOrderByAggregateInput: ["id", "email", "name"],
-  UserMinOrderByAggregateInput: ["id", "email", "name"],
+  OperationListRelationFilter: ["every", "some", "none"],
+  OperationOrderByRelationAggregateInput: ["_count"],
+  UserCountOrderByAggregateInput: ["id", "email"],
+  UserMaxOrderByAggregateInput: ["id", "email"],
+  UserMinOrderByAggregateInput: ["id", "email"],
   StringWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "mode", "not", "_count", "_min", "_max"],
+  PlaceCountOrderByAggregateInput: ["id", "name"],
+  PlaceMaxOrderByAggregateInput: ["id", "name"],
+  PlaceMinOrderByAggregateInput: ["id", "name"],
+  BoolFilter: ["equals", "not"],
+  OperationTypeCountOrderByAggregateInput: ["id", "name", "postive"],
+  OperationTypeMaxOrderByAggregateInput: ["id", "name", "postive"],
+  OperationTypeMinOrderByAggregateInput: ["id", "name", "postive"],
+  BoolWithAggregatesFilter: ["equals", "not", "_count", "_min", "_max"],
+  UserRelationFilter: ["is", "isNot"],
+  OperationTypeRelationFilter: ["is", "isNot"],
+  StringNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "mode", "not"],
+  PlaceRelationFilter: ["is", "isNot"],
+  DateTimeFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
+  FloatFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
+  OperationCountOrderByAggregateInput: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value"],
+  OperationAvgOrderByAggregateInput: ["value"],
+  OperationMaxOrderByAggregateInput: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value"],
+  OperationMinOrderByAggregateInput: ["id", "userId", "operationTypeId", "placeId", "comment", "date", "value"],
+  OperationSumOrderByAggregateInput: ["value"],
   StringNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "mode", "not", "_count", "_min", "_max"],
+  DateTimeWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_min", "_max"],
+  FloatWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_avg", "_sum", "_min", "_max"],
+  OperationCreateNestedManyWithoutUserInput: ["create", "connectOrCreate", "createMany", "connect"],
   StringFieldUpdateOperationsInput: ["set"],
+  OperationUpdateManyWithoutUserNestedInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
+  OperationCreateNestedManyWithoutPlaceInput: ["create", "connectOrCreate", "createMany", "connect"],
+  OperationUpdateManyWithoutPlaceNestedInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
+  OperationCreateNestedManyWithoutOperationTypeInput: ["create", "connectOrCreate", "createMany", "connect"],
+  BoolFieldUpdateOperationsInput: ["set"],
+  OperationUpdateManyWithoutOperationTypeNestedInput: ["create", "connectOrCreate", "upsert", "createMany", "set", "disconnect", "delete", "connect", "update", "updateMany", "deleteMany"],
+  UserCreateNestedOneWithoutOperationsInput: ["create", "connectOrCreate", "connect"],
+  OperationTypeCreateNestedOneWithoutOperationsInput: ["create", "connectOrCreate", "connect"],
+  PlaceCreateNestedOneWithoutOperationsInput: ["create", "connectOrCreate", "connect"],
+  UserUpdateOneRequiredWithoutOperationsNestedInput: ["create", "connectOrCreate", "upsert", "connect", "update"],
+  OperationTypeUpdateOneRequiredWithoutOperationsNestedInput: ["create", "connectOrCreate", "upsert", "connect", "update"],
+  PlaceUpdateOneWithoutOperationsNestedInput: ["create", "connectOrCreate", "upsert", "disconnect", "delete", "connect", "update"],
   NullableStringFieldUpdateOperationsInput: ["set"],
+  DateTimeFieldUpdateOperationsInput: ["set"],
+  FloatFieldUpdateOperationsInput: ["set", "increment", "decrement", "multiply", "divide"],
   NestedStringFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "not"],
-  NestedStringNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "not"],
   NestedStringWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "not", "_count", "_min", "_max"],
   NestedIntFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
+  NestedBoolFilter: ["equals", "not"],
+  NestedBoolWithAggregatesFilter: ["equals", "not", "_count", "_min", "_max"],
+  NestedStringNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "not"],
+  NestedDateTimeFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
+  NestedFloatFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
   NestedStringNullableWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "contains", "startsWith", "endsWith", "not", "_count", "_min", "_max"],
-  NestedIntNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"]
+  NestedIntNullableFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not"],
+  NestedDateTimeWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_min", "_max"],
+  NestedFloatWithAggregatesFilter: ["equals", "in", "notIn", "lt", "lte", "gt", "gte", "not", "_count", "_avg", "_sum", "_min", "_max"],
+  OperationCreateWithoutUserInput: ["id", "operationType", "place", "comment", "date", "value"],
+  OperationCreateOrConnectWithoutUserInput: ["where", "create"],
+  OperationCreateManyUserInputEnvelope: ["data", "skipDuplicates"],
+  OperationUpsertWithWhereUniqueWithoutUserInput: ["where", "update", "create"],
+  OperationUpdateWithWhereUniqueWithoutUserInput: ["where", "data"],
+  OperationUpdateManyWithWhereWithoutUserInput: ["where", "data"],
+  OperationScalarWhereInput: ["AND", "OR", "NOT", "id", "userId", "operationTypeId", "placeId", "comment", "date", "value"],
+  OperationCreateWithoutPlaceInput: ["id", "user", "operationType", "comment", "date", "value"],
+  OperationCreateOrConnectWithoutPlaceInput: ["where", "create"],
+  OperationCreateManyPlaceInputEnvelope: ["data", "skipDuplicates"],
+  OperationUpsertWithWhereUniqueWithoutPlaceInput: ["where", "update", "create"],
+  OperationUpdateWithWhereUniqueWithoutPlaceInput: ["where", "data"],
+  OperationUpdateManyWithWhereWithoutPlaceInput: ["where", "data"],
+  OperationCreateWithoutOperationTypeInput: ["id", "user", "place", "comment", "date", "value"],
+  OperationCreateOrConnectWithoutOperationTypeInput: ["where", "create"],
+  OperationCreateManyOperationTypeInputEnvelope: ["data", "skipDuplicates"],
+  OperationUpsertWithWhereUniqueWithoutOperationTypeInput: ["where", "update", "create"],
+  OperationUpdateWithWhereUniqueWithoutOperationTypeInput: ["where", "data"],
+  OperationUpdateManyWithWhereWithoutOperationTypeInput: ["where", "data"],
+  UserCreateWithoutOperationsInput: ["id", "email"],
+  UserCreateOrConnectWithoutOperationsInput: ["where", "create"],
+  OperationTypeCreateWithoutOperationsInput: ["id", "name", "postive"],
+  OperationTypeCreateOrConnectWithoutOperationsInput: ["where", "create"],
+  PlaceCreateWithoutOperationsInput: ["id", "name"],
+  PlaceCreateOrConnectWithoutOperationsInput: ["where", "create"],
+  UserUpsertWithoutOperationsInput: ["update", "create"],
+  UserUpdateWithoutOperationsInput: ["id", "email"],
+  OperationTypeUpsertWithoutOperationsInput: ["update", "create"],
+  OperationTypeUpdateWithoutOperationsInput: ["id", "name", "postive"],
+  PlaceUpsertWithoutOperationsInput: ["update", "create"],
+  PlaceUpdateWithoutOperationsInput: ["id", "name"],
+  OperationCreateManyUserInput: ["id", "operationTypeId", "placeId", "comment", "date", "value"],
+  OperationUpdateWithoutUserInput: ["id", "operationType", "place", "comment", "date", "value"],
+  OperationCreateManyPlaceInput: ["id", "userId", "operationTypeId", "comment", "date", "value"],
+  OperationUpdateWithoutPlaceInput: ["id", "user", "operationType", "comment", "date", "value"],
+  OperationCreateManyOperationTypeInput: ["id", "userId", "placeId", "comment", "date", "value"],
+  OperationUpdateWithoutOperationTypeInput: ["id", "user", "place", "comment", "date", "value"]
 };
 
 type InputTypesNames = keyof typeof inputTypes;

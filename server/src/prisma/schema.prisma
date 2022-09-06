@@ -15,5 +15,31 @@ generator typegraphql {
 model User {
   id    String  @default(cuid()) @id
   email String  @unique
-  name  String?
+  operations Operation[]
+}
+
+model Place {
+  id String @default(cuid()) @id
+  name String
+  Operations Operation[]
+}
+
+model OperationType {
+  id String @default(cuid()) @id
+  name String @unique
+  postive Boolean @default(true)
+  operations Operation[]
+}
+
+model Operation {
+  id String @default(cuid()) @id
+  userId String
+  user User @relation(fields: [userId], references: [id])
+  operationTypeId String
+  operationType OperationType @relation(fields: [operationTypeId], references: [id])
+  placeId String?
+  place Place? @relation(fields: [placeId], references: [id])
+  comment String?
+  date DateTime
+  value Float 
 }

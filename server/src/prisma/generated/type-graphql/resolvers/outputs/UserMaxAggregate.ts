@@ -16,9 +16,4 @@ export class UserMaxAggregate {
     nullable: true
   })
   email!: string | null;
-
-  @TypeGraphQL.Field(_type => String, {
-    nullable: true
-  })
-  name!: string | null;
 }

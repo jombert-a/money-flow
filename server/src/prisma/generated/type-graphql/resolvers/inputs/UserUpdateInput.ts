@@ -2,7 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
-import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
+import { OperationUpdateManyWithoutUserNestedInput } from "../inputs/OperationUpdateManyWithoutUserNestedInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 
 @TypeGraphQL.InputType("UserUpdateInput", {
@@ -19,8 +19,8 @@ export class UserUpdateInput {
   })
   email?: StringFieldUpdateOperationsInput | undefined;
 
-  @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
+  @TypeGraphQL.Field(_type => OperationUpdateManyWithoutUserNestedInput, {
     nullable: true
   })
-  name?: NullableStringFieldUpdateOperationsInput | undefined;
+  operations?: OperationUpdateManyWithoutUserNestedInput | undefined;
 }

@@ -2,8 +2,8 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { OperationListRelationFilter } from "../inputs/OperationListRelationFilter";
 import { StringFilter } from "../inputs/StringFilter";
-import { StringNullableFilter } from "../inputs/StringNullableFilter";
 
 @TypeGraphQL.InputType("UserWhereInput", {
   isAbstract: true
@@ -34,8 +34,8 @@ export class UserWhereInput {
   })
   email?: StringFilter | undefined;
 
-  @TypeGraphQL.Field(_type => StringNullableFilter, {
+  @TypeGraphQL.Field(_type => OperationListRelationFilter, {
     nullable: true
   })
-  name?: StringNullableFilter | undefined;
+  operations?: OperationListRelationFilter | undefined;
 }

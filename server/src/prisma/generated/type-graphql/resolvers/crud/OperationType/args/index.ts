@@ -1,0 +1,12 @@
+export { AggregateOperationTypeArgs } from "./AggregateOperationTypeArgs";
+export { CreateManyOperationTypeArgs } from "./CreateManyOperationTypeArgs";
+export { CreateOneOperationTypeArgs } from "./CreateOneOperationTypeArgs";
+export { DeleteManyOperationTypeArgs } from "./DeleteManyOperationTypeArgs";
+export { DeleteOneOperationTypeArgs } from "./DeleteOneOperationTypeArgs";
+export { FindFirstOperationTypeArgs } from "./FindFirstOperationTypeArgs";
+export { FindManyOperationTypeArgs } from "./FindManyOperationTypeArgs";
+export { FindUniqueOperationTypeArgs } from "./FindUniqueOperationTypeArgs";
+export { GroupByOperationTypeArgs } from "./GroupByOperationTypeArgs";
+export { UpdateManyOperationTypeArgs } from "./UpdateManyOperationTypeArgs";
+export { UpdateOneOperationTypeArgs } from "./UpdateOneOperationTypeArgs";
+export { UpsertOneOperationTypeArgs } from "./UpsertOneOperationTypeArgs";
