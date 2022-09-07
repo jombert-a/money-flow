@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/action_search"
-        android:actionLayout="@layout/activity_main"
-        android:title="main"/>
-    <item android:id="@+id/action_settings"
-        android:actionLayout="@layout/activity_category"
-        android:title="categories"/>
+    <item android:id="@+id/ic_home"
+        android:icon="@drawable/ic_baseline_home"
+        android:title="@string/home"/>
+    <item android:id="@+id/ic_categories"
+        android:icon="@drawable/ic_baseline_category"
+        android:title="@string/categories"/>
 </menu>
